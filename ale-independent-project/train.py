@@ -12,7 +12,7 @@ from stable_baselines3.common.vec_env import VecFrameStack
 gym.register_envs(ale_py)
 
 # Change these values for a shorter training run or to skip watching afterward.
-TOTAL_TIMESTEPS = 10_000  # Smoke test; use the approved budget for experiments.
+TOTAL_TIMESTEPS = 1_000_000  # Smoke test; use the approved budget for experiments.
 CHECKPOINT_FREQUENCY = 25_000
 
 # A new folder for each run protects previously saved models.
@@ -56,6 +56,7 @@ try:
         gamma=0.99,
         verbose=1,
         seed=SEED,
+        device ="mps"
     )
     agent.save(str(SAVE_DIR / "breakout_initial"))
     print("Initial model saved!", flush=True)
@@ -73,6 +74,7 @@ try:
         total_timesteps=TOTAL_TIMESTEPS,
         callback=checkpoint,
         log_interval=1,  # Print training statistics after every episode.
+        
     )
 
     # ==============================
