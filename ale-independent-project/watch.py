@@ -8,13 +8,18 @@ from stable_baselines3.common.vec_env import VecFrameStack
 gym.register_envs(ale_py)
 
 # Copy your final saved model here and name the copy my_model.zip.
-MODEL_PATH = Path(__file__).resolve().parent / "models/my_model.zip"
+MODEL_PATH = Path(__file__).resolve().parent /"models" / "run_20261119_114410_526555/breakout_125000_steps.zip"
 WATCH_STEPS = 2000
 
 agent = DQN.load(MODEL_PATH, device="cpu")
 
 # TODO: Match your training game and wrappers, with render_mode="human".
-watch_env = None
+watch_env = make_atari_env(
+    "ALE/AirRaid-v5",
+    n_envs=1,
+    env_kwargs={"frameskip":1, "render_mode": "human"},
+    wrapper_kwargs={"terminal_on_life_loss":False}
+)
 if watch_env is None:
     raise NotImplementedError("Complete the viewing environment setup.")
 watch_env = VecFrameStack(watch_env, n_stack=4)
